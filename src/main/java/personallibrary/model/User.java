@@ -1,6 +1,6 @@
 package personallibrary.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,13 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -45,24 +42,21 @@ public class User {
 	@JsonView({View.Main.class, View.UsuarioSimples.class})
 	private String email;
 		
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "BRW_BORROW", 
-    	joinColumns = { @JoinColumn(name = "USR_ID") }, 
-    	inverseJoinColumns = { @JoinColumn(name = "BK_ID") })
-    @JsonView({View.Main.class, View.Alternative.class})
-    @XmlElement(name = "book") 
-	private List<Book> locations;
-	
+	@OneToMany(mappedBy = "user", targetEntity=Borrow.class, fetch = FetchType.EAGER)
+	@JsonView({View.Main.class, View.UsuarioSimples.class})
+	private Set<Borrow> locations;
+/*	
 	public User(final String name, final String password, final String email) {
 		this.name = name;
 		this.password = password;
 		this.email = email;
+		locations = new ArrayList<Borrow>();
 	}
 	
 	public User() {
 		
 	}
-	
+*/	
 	public Long getId() {
 		return id;
 	}
@@ -80,11 +74,11 @@ public class User {
 		this.email = email;
 	}
 
-	public List<Book> getLocations() {
+	public Set<Borrow> getLocations() {
 		return locations;
 	}
 
-	public void setLocations(List<Book> locations) {
+	public void setLocations(Set<Borrow> locations) {
 		this.locations = locations;
 	}	
 }

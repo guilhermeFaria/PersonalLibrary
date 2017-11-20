@@ -1,6 +1,7 @@
 package personallibrary.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,13 +47,9 @@ public class Book {
 	@JsonView({View.Main.class, View.Alternative.class})
 	private String writer;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "BRW_BORROW", 
-    	joinColumns = { @JoinColumn(name = "BK_ID") }, 
-    	inverseJoinColumns = { @JoinColumn(name = "USR_ID") })
+	@OneToMany(mappedBy="book", targetEntity = Borrow.class, fetch = FetchType.EAGER)
     @JsonView({View.Main.class, View.Alternative.class})
-    @XmlElement(name = "book")
-	private List<User> locations;
+	private Set<Borrow> locations;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "BKGR_BOOK_GENRE", 
@@ -60,16 +58,19 @@ public class Book {
     @JsonView({View.Main.class, View.Alternative.class})
     @XmlElement(name = "book")
 	private List<Genre> genre;
-	
-	public Book(final String name, final List<Genre> genre) {
+/*	
+	public Book(final String name, final String isbn, final String writer, final List<Genre> genre) {
 		this.name = name;
+		this.isbn = isbn;
+		this.writer = writer;
 		this.genre = genre;
+		locations = new ArrayList<Borrow>();
 	}
 	
 	public Book() {
 		
 	}
-	
+*/	
 	public Long getId() {
 		return id;
 	}
@@ -97,12 +98,12 @@ public class Book {
 		this.writer = writer;
 	}
 
-	public List<User> getLocationsBooks() {
+	public Set<Borrow> getLocations() {
 		return locations;
 	}
 	
-	public void setLocations(List<User> locationsBooks) {
-		this.locations = locationsBooks;
+	public void setLocations(Set<Borrow> locations) {
+		this.locations = locations;
 	}
 	
 	public List<Genre> getGenre() {

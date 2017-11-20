@@ -35,28 +35,33 @@ public class UserController {
 	}
 	
 	@RequestMapping(value= "/searchId/{id}", method = RequestMethod.GET)
+	@JsonView(View.UsuarioSimples.class)
 	public ResponseEntity<User> search(@PathVariable("id") final Long id) {
 		return new ResponseEntity<User>(userService.searchUserId(id), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@JsonView(View.UsuarioSimples.class)
 	public ResponseEntity<Collection<User>> getAll() {
 		return new ResponseEntity<Collection<User>>(userService.getAllUsers(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@JsonView(View.UsuarioSimples.class)
 	public ResponseEntity<HttpStatus> createUser(@RequestBody final User user) {
 		userService.create(user);
 		return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@JsonView(View.UsuarioSimples.class)
 	public ResponseEntity<HttpStatus> deleteUser(@RequestBody final User user) {
 		userService.delete(user);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	@JsonView(View.UsuarioSimples.class)
 	public ResponseEntity<HttpStatus> updateUser(@RequestBody final User user) {
 		userService.update(user);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);

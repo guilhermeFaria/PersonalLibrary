@@ -11,10 +11,10 @@ public interface BorrowService {
 	 */
 	public List<Book> getAllBorrowed();
 
-	public List<Book> showBorrowedBooksByUser(long userId);
+	public List<Book> showBorrowedBooksByUser(final long userId);
 	
-	public void borrowedBook(long bookId);
+	public void borrowedBook(final long bookId, final long userId);
 
-	public void borrowedBookReturn(long bookId);
+	public void borrowedBookReturn(final long bookId);
 
 }

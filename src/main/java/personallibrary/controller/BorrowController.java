@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ import personallibrary.service.BorrowService;
 public class BorrowController {
 
 	@Autowired
-	private BorrowService borrowService;
+	public BorrowService borrowService;
 	
 	public void setBorrowService(BorrowService borrowService) {
 		this.borrowService = borrowService;
@@ -47,8 +48,8 @@ public class BorrowController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "/book/{bookId}", method = RequestMethod.POST)
-	public ResponseEntity<HttpStatus> borrowedBook(@PathVariable ("bookId") final long bookId) {
-		borrowService.borrowedBook(bookId);
+	public ResponseEntity<HttpStatus> borrowedBook(@PathVariable ("bookId") final long bookId, @RequestBody final long userId) {
+		borrowService.borrowedBook(bookId, userId);
 		return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
 	}
 	

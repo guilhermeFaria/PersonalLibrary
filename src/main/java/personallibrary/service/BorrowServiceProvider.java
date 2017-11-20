@@ -1,7 +1,7 @@
 package personallibrary.service;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,16 @@ import personallibrary.repository.BorrowRepository;
 public class BorrowServiceProvider implements BorrowService {
 	
 	private static final int BORROWED_DAYS = 7;
+	private static final String LOAN_INITIAL_STATE = "BORROWED";
 	
 	@Autowired
-	private BorrowRepository borrowRepository;
+	public BorrowRepository borrowRepository;
+	
+	@Autowired
+	private BookService bookService;
+	
+	@Autowired
+	private UserService userService;
 	
 	public void setBorrowRepository(BorrowRepository borrowRepository) {
 		this.borrowRepository = borrowRepository;
@@ -27,22 +34,25 @@ public class BorrowServiceProvider implements BorrowService {
 	
 	@Override
 	public List<Book> getAllBorrowed() {
-		return borrowRepository.getAllBorrowed();
+		//return borrowRepository.getAllBorrowed();
+		return new ArrayList<Book>();
 	}
 
 	@Override
-	public List<Book> showBorrowedBooksByUser(long userId) {
-		return borrowRepository.findBorrowedBookByBUser(userId);
+	public List<Book> showBorrowedBooksByUser(final long userId) {
+		//return borrowRepository.findBorrowedBookByBUser(userId);
+		return new ArrayList<Book>();
 		
 	}
 
 	@Override
-	public void borrowedBook(long bookId) {
-		borrowRepository.save(new Borrow(bookId, 1, LocalDate.now(), setDateForReturn()));
+	public void borrowedBook(final long bookId, final long userId) {
+		final Borrow borrowedBook = new Borrow(LOAN_INITIAL_STATE, LocalDate.now(), setDateForReturn(), bookService.searchBookId(bookId), userService.searchUserId(userId));
+		borrowRepository.save(borrowedBook);		
 	}
 
 	@Override
-	public void borrowedBookReturn(long bookId) {
+	public void borrowedBookReturn(final long bookId) {
 		// TODO Auto-generated method stub
 		
 	}
