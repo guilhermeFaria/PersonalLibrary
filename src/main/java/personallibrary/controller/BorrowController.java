@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import personallibrary.model.Book;
+import personallibrary.model.Borrow;
 import personallibrary.service.BorrowService;
 
 @RestController
@@ -29,8 +30,8 @@ public class BorrowController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<Collection<Book>> getAllBorrowed() {
-		return new ResponseEntity<Collection<Book>>(borrowService.getAllBorrowed(), HttpStatus.OK);
+	public ResponseEntity<Collection<Borrow>> getAllBorrowed() {
+		return new ResponseEntity<Collection<Borrow>>(borrowService.getAllBorrowed(), HttpStatus.OK);
 	}
 	
 	@CrossOrigin

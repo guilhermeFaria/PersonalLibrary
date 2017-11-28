@@ -36,26 +36,26 @@ public class Book {
 	private Long id;
 	
 	@Column(name="BK_NAME", unique=true, length=50, nullable=false)
-	@JsonView({View.Main.class, View.Alternative.class})
+	@JsonView({View.Main.class})
 	private String name;
 	
 	@Column(name="BK_ISBN", unique=true, length=20)
-	@JsonView({View.Main.class, View.Alternative.class})
+	@JsonView({View.Main.class})
 	private String isbn;
 	
 	@Column(name="BK_WRITER", unique=true, length=50)
-	@JsonView({View.Main.class, View.Alternative.class})
+	@JsonView({View.Main.class})
 	private String writer;
 	
 	@OneToMany(mappedBy="book", targetEntity = Borrow.class, fetch = FetchType.EAGER)
-    @JsonView({View.Main.class, View.Alternative.class})
+    @JsonView({View.Main.class})
 	private Set<Borrow> locations;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "BKGR_BOOK_GENRE", 
     	joinColumns = { @JoinColumn(name = "BK_ID") }, 
     	inverseJoinColumns = { @JoinColumn(name = "GR_ID") })
-    @JsonView({View.Main.class, View.Alternative.class})
+    @JsonView({View.Main.class})
     @XmlElement(name = "book")
 	private List<Genre> genre;
 /*	

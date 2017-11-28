@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import personallibrary.service.BookService;
 import personallibrary.view.View;
 
 @RestController
+@CrossOrigin
 @RequestMapping (value = "/book")
 public class BookController {
 	
@@ -46,22 +49,26 @@ public class BookController {
 		return new ResponseEntity<Collection<Book>>(bookService.getAllBooks(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@JsonView(View.Main.class)
+	@PreAuthorize("hasRole('ROLE_BASIC_USER')")
 	public ResponseEntity<HttpStatus> createBook(@RequestBody final Book book) {
 		bookService.create(book);
 		return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	@JsonView(View.Main.class)
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<HttpStatus> updateBook(@RequestBody final Book book) {
 		bookService.update(book);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.DELETE)
 	@JsonView(View.Main.class)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<HttpStatus> deleteBook(@RequestBody final Book book) {
 		bookService.delete(book);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);

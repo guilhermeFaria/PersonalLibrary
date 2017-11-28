@@ -33,9 +33,14 @@ public class BorrowServiceProvider implements BorrowService {
 	}
 	
 	@Override
-	public List<Book> getAllBorrowed() {
+	public List<Borrow> getAllBorrowed() {
 		//return borrowRepository.getAllBorrowed();
-		return new ArrayList<Book>();
+		List<Borrow> allBorrows = new ArrayList<Borrow>();
+		for(Borrow borrow: borrowRepository.findAll()) {
+			allBorrows.add(borrow);
+		}
+		
+		return allBorrows;
 	}
 
 	@Override
